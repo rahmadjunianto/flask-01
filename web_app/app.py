@@ -14,4 +14,15 @@ def create_app():
     def about():
         return render_template('about.html', TITLE = 'FLASK 01')
 
+    @app.route('/testdb')
+    def testdb():
+        import psycopg2
+
+        con = psycopg2.connect('dbname=flash01 user=devuser password=devpassword host=postgres')
+        cur = con.cursor()
+        cur.execute('select * from page;')
+        id, title = cur.fetchone()
+        con.close()
+        return 'Output DB page : {} - {}'.format(id, title)
+
     return app
