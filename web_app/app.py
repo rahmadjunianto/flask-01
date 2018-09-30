@@ -7,7 +7,14 @@ def create_app():
 
     @app.route('/')
     def index():
-        return render_template('index.html', TITLE = 'FLASK 01')
+        import psycopg2
+
+        con = psycopg2.connect('dbname=flash01 user=devuser password=devpassword host=postgres')
+        cur = con.cursor()
+        cur.execute('select content from page where id=1') # mengembalikan tuple (0,1,2)
+        content = cur.fetchone()
+        con.close()
+        return render_template('index.html', TITLE = 'FLASK 01', CONTENT=content[0])
 
 
     @app.route('/about')
