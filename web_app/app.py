@@ -1,24 +1,13 @@
 from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Integer, Column, String
+
+from web_app.models import db, Page
 
 
 def create_app():
     app = Flask (__name__)
     app.config.from_pyfile('settings.py')
-    db=SQLAlchemy(app)
 
-    class Page(db.Model):
-        __tablename__ = 'page'
-        id = Column(Integer, primary_key= True)
-        content = Column(String)
-
-    class Post(db.Model):
-        __tablename__ = 'post'
-        id = Column(Integer, primary_key= True)
-        content = Column(String)
-
-    db.create_all()
+    db.init_app(app)
 
     @app.route('/')
     def index():
